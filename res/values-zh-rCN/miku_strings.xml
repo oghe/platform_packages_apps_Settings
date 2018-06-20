@@ -79,4 +79,11 @@
     <string name="lockscreen_tweaks_category_title">锁屏手势</string>
     <string name="double_tap_sleep_lockscreen_title">锁屏界面双击来睡眠罢！</string>
 
+    <!-- Hardware info -->
+    <!-- Label for device's hardware platform value [CHAR LIMIT=40] -->
+    <string name="platform_revision">硬件平台</string>
+
+    <!-- Label for device's hardware ram size [CHAR LIMIT=40] -->
+    <string name="total_ram">可以使用的总内存</string>
+
 </resources>
