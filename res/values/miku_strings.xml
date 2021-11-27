@@ -27,6 +27,10 @@
     <string name="selinux_status_permissive">Permissive</string>
     <string name="selinux_status_enforcing">Enforcing</string>
 
+    <!-- Global Actions -->
+    <string name="global_actions_advanced_reboot_title">Enable advanced restart</string>
+    <string name="global_actions_advanced_reboot_summary">Show additional reboot options in power menu</string>
+
     <!-- Volume link notification -->
     <string name="volume_link_notification_title">Link ring &amp; notification volumes</string>
 
