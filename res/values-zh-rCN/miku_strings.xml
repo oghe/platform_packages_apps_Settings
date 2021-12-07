@@ -61,6 +61,9 @@
     <string name="unit_milliseconds">毫秒</string>
     <string name="unit_pixels">dp</string>
 
+    <!-- Volume link notification -->
+    <string name="volume_link_notification_title">把铃声与通知音量绑定在一起~</string>
+
     <!-- Global Actions -->
     <string name="global_actions_advanced_reboot_title">高级重启</string>
     <string name="global_actions_advanced_reboot_summary">在重启菜单中显示更多的选项捏！</string>
