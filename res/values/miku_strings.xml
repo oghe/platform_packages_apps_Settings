@@ -83,8 +83,4 @@
     <string name="lockscreen_tweaks_category_title">Lockscreen gestures</string>
     <string name="double_tap_sleep_lockscreen_title">Double tap to sleep on lockscreen</string>
 
-    <!-- Miku Settings-->
-    <string name="miku_settings_title">Miku Settings</string>
-    <string name="miku_settings_summary">TT</string>
-
 </resources>
