@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License
  */
-
 package com.android.settings.biometrics.fingerprint;
-
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.Nullable;
@@ -45,61 +43,48 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.IntDef;
 import androidx.appcompat.app.AlertDialog;
-
 import com.android.settings.R;
 import com.android.settings.biometrics.BiometricEnrollSidecar;
 import com.android.settings.biometrics.BiometricUtils;
 import com.android.settings.biometrics.BiometricsEnrollEnrolling;
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
-
 import com.google.android.setupcompat.template.FooterBarMixin;
 import com.google.android.setupcompat.template.FooterButton;
 import com.google.android.setupcompat.util.WizardManagerHelper;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
-
 /**
  * Activity which handles the actual enrolling for fingerprint.
  */
 public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
-
     private static final String TAG = "FingerprintEnrollEnrolling";
     static final String TAG_SIDECAR = "sidecar";
-
     private static final int PROGRESS_BAR_MAX = 10000;
-
     private static final int STAGE_UNKNOWN = -1;
     private static final int STAGE_CENTER = 0;
     private static final int STAGE_GUIDED = 1;
     private static final int STAGE_FINGERTIP = 2;
     private static final int STAGE_EDGES = 3;
-
     @IntDef({STAGE_UNKNOWN, STAGE_CENTER, STAGE_GUIDED, STAGE_FINGERTIP, STAGE_EDGES})
     @Retention(RetentionPolicy.SOURCE)
     private @interface EnrollStage {}
-
     /**
      * If we don't see progress during this time, we show an error message to remind the users that
      * they need to lift the finger and touch again.
      */
     private static final int HINT_TIMEOUT_DURATION = 2500;
-
     /**
      * How long the user needs to touch the icon until we show the dialog.
      */
     private static final long ICON_TOUCH_DURATION_UNTIL_DIALOG_SHOWN = 500;
-
     /**
      * How many times the user needs to touch the icon until we show the dialog that this is not the
      * fingerprint sensor.
      */
     private static final int ICON_TOUCH_COUNT_SHOW_UNTIL_DIALOG_SHOWN = 3;
-
     private static final VibrationEffect VIBRATE_EFFECT_ERROR =
             VibrationEffect.createWaveform(new long[] {0, 5, 55, 60}, -1);
     private static final AudioAttributes FINGERPRINT_ENROLLING_SONFICATION_ATTRIBUTES =
@@ -107,7 +92,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
                     .build();
-
     private FingerprintManager mFingerprintManager;
     private boolean mCanAssumeUdfps;
     @Nullable private ProgressBar mProgressBar;
@@ -126,24 +110,18 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
     private boolean mIsSetupWizard;
     private AccessibilityManager mAccessibilityManager;
     private boolean mIsAccessibilityEnabled;
-
     private OrientationEventListener mOrientationEventListener;
     private int mPreviousRotation = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mFingerprintManager = getSystemService(FingerprintManager.class);
         final List<FingerprintSensorPropertiesInternal> props =
                 mFingerprintManager.getSensorPropertiesInternal();
         mCanAssumeUdfps = props.size() == 1 && props.get(0).isAnyUdfpsType();
-
         mAccessibilityManager = getSystemService(AccessibilityManager.class);
         mIsAccessibilityEnabled = mAccessibilityManager.isEnabled();
-
         listenOrientationEvent();
-
         if (mCanAssumeUdfps) {
             if (BiometricUtils.isReverseLandscape(getApplicationContext())) {
                 setContentView(R.layout.udfps_enroll_enrolling_land);
@@ -155,18 +133,15 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
             setContentView(R.layout.fingerprint_enroll_enrolling);
             setDescriptionText(R.string.security_settings_fingerprint_enroll_start_message);
         }
-
         mIsSetupWizard = WizardManagerHelper.isAnySetupWizard(getIntent());
         if (mCanAssumeUdfps) {
             updateTitleAndDescriptionForUdfps();
         } else {
             setHeaderText(R.string.security_settings_fingerprint_enroll_repeat_title);
         }
-
         mErrorText = findViewById(R.id.error_text);
         mProgressBar = findViewById(R.id.fingerprint_progress_bar);
         mVibrator = getSystemService(Vibrator.class);
-
         mFooterBarMixin = getLayout().getMixin(FooterBarMixin.class);
         mFooterBarMixin.setSecondaryButton(
                 new FooterButton.Builder(this)
@@ -176,7 +151,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
                         .setTheme(R.style.SudGlifButton_Secondary)
                         .build()
         );
-
         final LayerDrawable fingerprintDrawable = mProgressBar != null
                 ? (LayerDrawable) mProgressBar.getBackground() : null;
         if (fingerprintDrawable != null) {
@@ -186,7 +160,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
                     fingerprintDrawable.findDrawableByLayerId(R.id.fingerprint_background);
             mIconAnimationDrawable.registerAnimationCallback(mIconAnimationCallback);
         }
-
         mFastOutSlowInInterpolator = AnimationUtils.loadInterpolator(
                 this, android.R.interpolator.fast_out_slow_in);
         mLinearOutSlowInInterpolator = AnimationUtils.loadInterpolator(
@@ -212,14 +185,12 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
         }
         mRestoring = savedInstanceState != null;
     }
-
     @Override
     protected BiometricEnrollSidecar getSidecar() {
         final FingerprintEnrollSidecar sidecar = new FingerprintEnrollSidecar();
         sidecar.setEnrollReason(FingerprintManager.ENROLL_ENROLL);
         return sidecar;
     }
-
     @Override
     protected boolean shouldStartAutomatically() {
         if (mCanAssumeUdfps) {
@@ -229,7 +200,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
         }
         return true;
     }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -239,44 +209,36 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
             startIconAnimation();
         }
     }
-
     @Override
     public void onEnterAnimationComplete() {
         super.onEnterAnimationComplete();
-
         if (mCanAssumeUdfps) {
             startEnrollment();
         }
-
         mAnimationCancelled = false;
         startIconAnimation();
     }
-
     private void startIconAnimation() {
         if (mIconAnimationDrawable != null) {
             mIconAnimationDrawable.start();
         }
     }
-
     private void stopIconAnimation() {
         mAnimationCancelled = true;
         if (mIconAnimationDrawable != null) {
             mIconAnimationDrawable.stop();
         }
     }
-
     @Override
     protected void onStop() {
         super.onStop();
         stopIconAnimation();
     }
-
     @Override
     protected void onDestroy() {
         stopListenOrientationEvent();
         super.onDestroy();
     }
-
     private void animateProgress(int progress) {
         if (mCanAssumeUdfps) {
             // UDFPS animations are owned by SystemUI
@@ -297,37 +259,31 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
         anim.start();
         mProgressAnim = anim;
     }
-
     private void animateFlash() {
         if (mIconBackgroundBlinksDrawable != null) {
             mIconBackgroundBlinksDrawable.start();
         }
     }
-
     protected Intent getFinishIntent() {
         return new Intent(this, FingerprintEnrollFinish.class);
     }
-
     private void updateTitleAndDescription() {
         if (mCanAssumeUdfps) {
             updateTitleAndDescriptionForUdfps();
             return;
         }
-
         if (mSidecar == null || mSidecar.getEnrollmentSteps() == -1) {
             setDescriptionText(R.string.security_settings_fingerprint_enroll_start_message);
         } else {
             setDescriptionText(R.string.security_settings_fingerprint_enroll_repeat_message);
         }
     }
-
     private void updateTitleAndDescriptionForUdfps() {
         switch (getCurrentStage()) {
             case STAGE_CENTER:
                 setHeaderText(R.string.security_settings_fingerprint_enroll_repeat_title);
                 setDescriptionText(R.string.security_settings_udfps_enroll_start_message);
                 break;
-
             case STAGE_GUIDED:
                 setHeaderText(R.string.security_settings_fingerprint_enroll_repeat_title);
                 if (mIsAccessibilityEnabled) {
@@ -336,7 +292,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
                     setDescriptionText(R.string.security_settings_udfps_enroll_repeat_message);
                 }
                 break;
-
             case STAGE_FINGERTIP:
                 setHeaderText(R.string.security_settings_udfps_enroll_fingertip_title);
                 if (isStageHalfCompleted()) {
@@ -345,7 +300,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
                     setDescriptionText("");
                 }
                 break;
-
             case STAGE_EDGES:
                 setHeaderText(R.string.security_settings_udfps_enroll_edge_title);
                 if (isStageHalfCompleted()) {
@@ -355,7 +309,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
                     setDescriptionText(R.string.security_settings_udfps_enroll_edge_message);
                 }
                 break;
-
             case STAGE_UNKNOWN:
             default:
                 // setHeaderText(R.string.security_settings_fingerprint_enroll_udfps_title);
@@ -372,13 +325,11 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
                 break;
         }
     }
-
     @EnrollStage
     private int getCurrentStage() {
         if (mSidecar == null || mSidecar.getEnrollmentSteps() == -1) {
             return STAGE_UNKNOWN;
         }
-
         final int progressSteps = mSidecar.getEnrollmentSteps() - mSidecar.getEnrollmentRemaining();
         if (progressSteps < getStageThresholdSteps(0)) {
             return STAGE_CENTER;
@@ -390,13 +341,11 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
             return STAGE_EDGES;
         }
     }
-
     private boolean isStageHalfCompleted() {
         // Prior to first enrollment step.
         if (mSidecar == null || mSidecar.getEnrollmentSteps() == -1) {
             return false;
         }
-
         final int progressSteps = mSidecar.getEnrollmentSteps() - mSidecar.getEnrollmentRemaining();
         int prevThresholdSteps = 0;
         for (int i = 0; i < mFingerprintManager.getEnrollStageCount(); i++) {
@@ -408,11 +357,9 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
             }
             prevThresholdSteps = thresholdSteps;
         }
-
         // After last enrollment step.
         return true;
     }
-
     private int getStageThresholdSteps(int index) {
         if (mSidecar == null || mSidecar.getEnrollmentSteps() == -1) {
             Log.w(TAG, "getStageThresholdSteps: Enrollment not started yet");
@@ -421,7 +368,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
         return Math.round(mSidecar.getEnrollmentSteps()
                 * mFingerprintManager.getEnrollStageThreshold(index));
     }
-
     @Override
     public void onEnrollmentHelp(int helpMsgId, CharSequence helpString) {
         if (!TextUtils.isEmpty(helpString)) {
@@ -431,7 +377,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
             showError(helpString);
         }
     }
-
     @Override
     public void onEnrollmentError(int errMsgId, CharSequence errString) {
         FingerprintErrorDialog.showErrorDialog(this, errMsgId);
@@ -440,10 +385,8 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
             mErrorText.removeCallbacks(mTouchAgainRunnable);
         }
     }
-
     @Override
     public void onEnrollmentProgressChange(int steps, int remaining) {
-        correctStageThresholds();
         updateProgress(true /* animate */);
         updateTitleAndDescription();
         clearError();
@@ -465,30 +408,11 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
             }
         }
     }
-
-    private void correctStageThresholds() {
-        if (mSidecar == null || !mSidecar.isEnrolling() || mSidecar.getEnrollmentSteps() <= 0) {
-            Log.d(TAG, "correctStageThresholds: Enrollment not started yet");
-            return;
-        }
-
-        // Allocate (or subtract) any extra steps for the first enroll stage.
-        final int extraSteps = mSidecar.getEnrollmentSteps()
-                - STAGE_THRESHOLDS[STAGE_THRESHOLDS.length - 1];
-        if (extraSteps != 0) {
-            for (int stageIndex = 0; stageIndex < STAGE_THRESHOLDS.length; stageIndex++) {
-                STAGE_THRESHOLDS[stageIndex] =
-                        Math.max(0, STAGE_THRESHOLDS[stageIndex] + extraSteps);
-            }
-        }
-    }
-
     private void updateProgress(boolean animate) {
         if (mSidecar == null || !mSidecar.isEnrolling()) {
             Log.d(TAG, "Enrollment not started yet");
             return;
         }
-
         int progress = getProgress(
                 mSidecar.getEnrollmentSteps(), mSidecar.getEnrollmentRemaining());
         if (animate) {
@@ -502,7 +426,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
             }
         }
     }
-
     private int getProgress(int steps, int remaining) {
         if (steps == -1) {
             return 0;
@@ -510,12 +433,10 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
         int progress = Math.max(0, steps + 1 - remaining);
         return PROGRESS_BAR_MAX * progress / (steps + 1);
     }
-
     private void showIconTouchDialog() {
         mIconTouchCount = 0;
         new IconTouchDialog().show(getSupportFragmentManager(), null /* tag */);
     }
-
     private void showError(CharSequence error) {
         if (mCanAssumeUdfps) {
             setHeaderText(error);
@@ -544,7 +465,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
             mVibrator.vibrate(VIBRATE_EFFECT_ERROR, FINGERPRINT_ENROLLING_SONFICATION_ATTRIBUTES);
         }
     }
-
     private void clearError() {
         if (!mCanAssumeUdfps && mErrorText.getVisibility() == View.VISIBLE) {
             mErrorText.animate()
@@ -557,7 +477,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
                     .start();
         }
     }
-
     private void listenOrientationEvent() {
         mOrientationEventListener = new OrientationEventListener(this) {
             @Override
@@ -575,37 +494,30 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
         mOrientationEventListener.enable();
         mPreviousRotation = getDisplay().getRotation();
     }
-
     private void stopListenOrientationEvent() {
         if (mOrientationEventListener != null) {
             mOrientationEventListener.disable();
         }
         mOrientationEventListener = null;
     }
-
     private final Animator.AnimatorListener mProgressAnimationListener =
             new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) { }
-
                 @Override
                 public void onAnimationRepeat(Animator animation) { }
-
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     if (mProgressBar.getProgress() >= PROGRESS_BAR_MAX) {
                         mProgressBar.postDelayed(mDelayedFinishRunnable, getFinishDelay());
                     }
                 }
-
                 @Override
                 public void onAnimationCancel(Animator animation) { }
             };
-
     private long getFinishDelay() {
         return mCanAssumeUdfps ? 400L : 250L;
     }
-
     // Give the user a chance to see progress completed before jumping to the next stage.
     private final Runnable mDelayedFinishRunnable = new Runnable() {
         @Override
@@ -613,7 +525,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
             launchFinish(mToken);
         }
     };
-
     private final Animatable2.AnimationCallback mIconAnimationCallback =
             new Animatable2.AnimationCallback() {
         @Override
@@ -621,7 +532,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
             if (mAnimationCancelled) {
                 return;
             }
-
             // Start animation after it has ended.
             mProgressBar.post(new Runnable() {
                 @Override
@@ -631,28 +541,23 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
             });
         }
     };
-
     private final Runnable mShowDialogRunnable = new Runnable() {
         @Override
         public void run() {
             showIconTouchDialog();
         }
     };
-
     private final Runnable mTouchAgainRunnable = new Runnable() {
         @Override
         public void run() {
             showError(getString(R.string.security_settings_fingerprint_enroll_lift_touch_again));
         }
     };
-
     @Override
     public int getMetricsCategory() {
         return SettingsEnums.FINGERPRINT_ENROLLING;
     }
-
     public static class IconTouchDialog extends InstrumentedDialogFragment {
-
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -667,7 +572,6 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
                             });
             return builder.create();
         }
-
         @Override
         public int getMetricsCategory() {
             return SettingsEnums.DIALOG_FINGERPRINT_ICON_TOUCH;
