@@ -38,8 +38,8 @@ import com.android.internal.logging.nano.MetricsProto;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 
-import com.android.settings.preferences.CustomSeekBarPreference;
-import com.android.settings.preferences.SystemSettingListPreference;
+import com.miku.settings.preferences.CustomSecureSeekBarPreference;
+import com.miku.settings.preferences.SecureSettingListPreference;
 
 public class Ticker extends SettingsPreferenceFragment {
 
@@ -57,12 +57,12 @@ public class Ticker extends SettingsPreferenceFragment {
     public static void reset(Context mContext) {
         ContentResolver resolver = mContext.getContentResolver();
 
-        Settings.System.putIntForUser(resolver,
-                Settings.System.STATUS_BAR_SHOW_TICKER, 0, UserHandle.USER_CURRENT);
-        Settings.System.putIntForUser(resolver,
-                Settings.System.STATUS_BAR_TICKER_ANIMATION_MODE, 1, UserHandle.USER_CURRENT);
-        Settings.System.putIntForUser(resolver,
-                Settings.System.STATUS_BAR_TICKER_TICK_DURATION, 3000, UserHandle.USER_CURRENT);
+        Settings.Secure.putIntForUser(resolver,
+                Settings.Secure.STATUS_BAR_SHOW_TICKER, 0, UserHandle.USER_CURRENT);
+        Settings.Secure.putIntForUser(resolver,
+                Settings.Secure.STATUS_BAR_TICKER_ANIMATION_MODE, 1, UserHandle.USER_CURRENT);
+        Settings.Secure.putIntForUser(resolver,
+                Settings.Secure.STATUS_BAR_TICKER_TICK_DURATION, 3000, UserHandle.USER_CURRENT);
     }
 
     @Override

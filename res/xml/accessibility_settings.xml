@@ -73,7 +73,7 @@
             settings:controller="com.android.settings.accessibility.MagnificationPreferenceController"/>
 
         <!-- Statusbar Lyric -->
-        <SwitchPreference
+        <com.miku.settings.preferences.SecureSettingSwitchPreference
             android:key="status_bar_show_lyric"
             android:title="@string/status_bar_show_lyric_title"
             android:summary="@string/status_bar_show_lyric_summary"
