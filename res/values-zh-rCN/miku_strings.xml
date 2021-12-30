@@ -44,6 +44,13 @@
     <string name="status_bar_show_lyric_title">状态栏歌词（需要应用支持哦）</string>
     <string name="status_bar_show_lyric_summary">感谢 Shelling 的贡献！此功能的本家是 @exTHmUI</string>
 
+    <!-- Title of Touch Sensitivity. TouchSensitivity is a feature which improves touch when using screen protectors. [CHAR LIMIT=60] -->
+    <string name="touch_sensitivity_title">提升触控敏感度</string>
+    <!-- Summary of Touch Sensitivity preference. [CHAR LIMIT=NONE] -->
+    <string name="touch_sensitivity_summary">如果给手机贴膜了可以试试这个捏</string>
+    <!-- Keywords for Touch Sensitivity feature [CHAR_LIMIT=none] -->
+    <string name="keywords_touch_sensitivity">触控, 敏感度, 贴膜, 触摸, 屏幕</string>
+
     <!-- Units -->
     <string name="unit_seconds">秒</string>
     <string name="unit_milliseconds">毫秒</string>
