@@ -46,7 +46,7 @@
 
      <!-- Status Bar Lyric -->
     <string name="status_bar_show_lyric_title">Status bar lyric (need App support)</string>
-    <string name="status_bar_show_lyric_summary">Show lyric in status bar. Thanks to @cjybyjk ! (from @exTHmUI)</string>
+    <string name="status_bar_show_lyric_summary">Show lyric in status bar. Thanks to @cjybyjk ! </string>
 
     <!-- Title of Touch Sensitivity. TouchSensitivity is a feature which improves touch when using screen protectors. [CHAR LIMIT=60] -->
     <string name="touch_sensitivity_title">Increase touch sensitivity</string>
@@ -69,11 +69,11 @@
 
     <!-- Double Tap to Sleep Statusbar -->
     <string name="double_tap_sleep_gesture_title">Tap to sleep</string>
-    <string name="double_tap_sleep_gesture_summary">Double-tap anywhere on the status bar to put the device to sleep</string>
+    <string name="double_tap_sleep_gesture_summary">Double-tap  on Miku\'s head to make Miku sleep</string>
 
     <!--Double Tap to Sleep Lockscreen-->
     <string name="lockscreen_tweaks_category_title">Lockscreen gestures</string>
-    <string name="double_tap_sleep_lockscreen_title">Double tap to sleep on lockscreen</string>
+    <string name="double_tap_sleep_lockscreen_title">Double tap on lockscreen to let miku sleep</string>
 
     <!-- Hardware info -->
     <!-- Label for device's hardware platform value [CHAR LIMIT=40] -->
