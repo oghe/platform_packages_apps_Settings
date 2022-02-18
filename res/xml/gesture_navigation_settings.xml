@@ -32,9 +32,7 @@
             android:key="assistant_gesture_corner_swipe"
             android:title="@string/assistant_corner_gesture_title"
             android:summary="@string/assistant_corner_gesture_summary"
-            settings:controller="com.android.settings.gestures.GestureNavigationSettingsAssistController"
-        />
-
+            settings:controller="com.android.settings.gestures.GestureNavigationSettingsAssistController"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -57,6 +55,12 @@
             android:selectable="true"
             settings:textStart="@string/low_label"
             settings:textEnd="@string/high_label"/>
+
+        <com.android.settingslib.widget.FooterPreference
+            android:key="gesture_navigation_settings_footer"
+            android:title="@string/back_sensitivity_dialog_message"
+            android:selectable="false"
+            settings:searchable="false"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -84,13 +88,7 @@
         android:key="show_back_arrow_gesture"
         android:title="@string/back_gesture_arrow_message"
         android:summary="@string/back_gesture_arrow_summary"
-        android:defaultValue="true" />
-
-    <com.android.settingslib.widget.FooterPreference
-        android:key="gesture_navigation_settings_footer"
-        android:title="@string/back_sensitivity_dialog_message"
-        android:selectable="false"
-        settings:searchable="false"/>
+        android:defaultValue="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -101,6 +99,6 @@
             android:key="fullscreen_gestures"
             android:title="@string/fullscreen_gestures_title"
             android:summary="@string/fullscreen_gestures_summary"
-            android:defaultValue="false" />
+            android:defaultValue="false"/>
     </PreferenceCategory>
 </PreferenceScreen>
